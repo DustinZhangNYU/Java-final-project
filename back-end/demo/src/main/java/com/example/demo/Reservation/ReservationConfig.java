@@ -95,7 +95,7 @@ public class ReservationConfig {
 
             );
             atomix.setManager(atomixManager);
-            Store panadaExpress = new Store(
+            Store pandaExpress = new Store(
                     "PandaExpress",
                     "USA",
                     "new york",
@@ -105,8 +105,8 @@ public class ReservationConfig {
                     "14038"
 
             );
-            panadaExpress.setManager(pandaManager);
-            storeRepo.saveAll(List.of(jeju, atomix));
+            pandaExpress.setManager(pandaManager);
+            storeRepo.saveAll(List.of(jeju, atomix,pandaExpress));
             Reservation res1 = new Reservation(
                     LocalDateTime.of(2022, 12, 16, 17, 00),
                     LocalDateTime.of(2022, 12, 16, 19, 00),
@@ -142,7 +142,7 @@ public class ReservationConfig {
                     "Available"
             );
             res5.setCustomer(test);
-            res5.setStore(panadaExpress);
+            res5.setStore(pandaExpress);
             reservationRepo.saveAll(List.of(res1,res2,res3,res4,res5));
         };
 
