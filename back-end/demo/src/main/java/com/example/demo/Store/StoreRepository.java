@@ -8,4 +8,5 @@ import java.util.List;
 @Repository
 public interface StoreRepository extends JpaRepository<Store, Long> {
     List<Store> findByName(String name);
+    Store findFirstByManager_Id(Long manager_id);
 }

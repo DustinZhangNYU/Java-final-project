@@ -1,54 +1,71 @@
-import React, { Component, useState } from 'react';
+import React, { Component} from 'react';
 import LoginContainer from './LoginContainer';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Checkbox, Form, Input, message } from 'antd';
 
-const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [type, setType] = useState("");
-  
-    const onFinish = (values) => {
-      console.log('Success:', values);
-    };
-  
-    const onFinishFailed = (errorInfo) => {
-      console.log('Failed:', errorInfo);
-    };
+class Login extends Component {
+  state = {
+    email: '',
+    password: '',
+    isLogin: false,
+    isCustomer: true
+  }
 
-    let handleSubmit = async (e) => {
-      e.preventDefault();
-      try {
-        setEmail(email);
-        setPassword(password);
+  onFinish = (values) => {
+    this.setState({
+      email: values.email,
+      password: values.password
+    })
+    console.log(this.state);
+  };
 
-        // let res = await fetch("/booking/login", {
-        //   method: "POST",
-        //   body: JSON.stringify({
-        //     email: email,
-        //     passwrod: password
-        //   }),
-        // });
+  onFinishFailed = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+  };
 
-        // let resJson = await res.json();
+  failMessage = () => {
+    message.info('Incorrect email or password.')
+  };
 
-        // if (res.status === 200) {
-        
-        if (true) {
-          window.location.href = "/customer";
-          console.log(email)
-        } else {
-          //
-        }
-      } catch (err) {
-        console.log(err);
+  handleSubmit = async (e) => {
+    console.log(this.state)
+
+    try {
+      let res = await fetch("/booking/user/login", {
+        method: "POST",
+        headers: {
+          'Content-type': 'application/json'
+        },
+        body: JSON.stringify(
+          this.state
+        ),
+      });
+
+      let resJson = await res.json();
+
+      const userId = resJson.id;
+      const type = resJson.type;
+
+      sessionStorage.setItem("userId", userId);
+      sessionStorage.setItem("type", type);
+
+      if (res.status === 200) {
+        window.location.href = "/customer";
+      } else {
+        alert("wrong password or email")  
       }
-    };
-  
-    return (
+    } catch (err) {
+      console.log(err);
+      alert("wrong password or email")
+    }
+  }
+
+    render() {
+      return (
       <LoginContainer>
         <h1>Online Booking System</h1>
       <Form
         name="basic"
+        id='login'
         labelCol={{
           span: 8,
         }}
@@ -58,8 +75,8 @@ const Login = () => {
         initialValues={{
           remember: true,
         }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
+        onFinish = {this.onFinish}
+        onFinishFailed = {this.failMessage}
         autoComplete="off"
       >
         <Form.Item
@@ -72,10 +89,7 @@ const Login = () => {
             },
           ]}
         >
-          <Input
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            />
+          <Input value={this.state.email}/>
         </Form.Item>
   
         <Form.Item
@@ -88,10 +102,7 @@ const Login = () => {
             },
           ]}
         >
-          <Input.Password 
-            value={password}
-            onChange = {e => setPassword(e.target.value)}
-            />
+          <Input.Password value={this.state.password}/>
         </Form.Item>
   
         <Form.Item
@@ -113,8 +124,9 @@ const Login = () => {
         >
           <Button type="primary"
             htmlType="submit"
-            onClick = { handleSubmit }>
-            Submit
+            onClick={this.handleSubmit}
+            >
+            Login
           </Button>
           <Button type="link" htmlType="submit">
             Register
@@ -122,10 +134,8 @@ const Login = () => {
         </Form.Item>
       </Form>
       </LoginContainer>
-      
-    );
-    
-  };
+      );
+    }
+}
   
-  export default Login;
-  
+export default Login;

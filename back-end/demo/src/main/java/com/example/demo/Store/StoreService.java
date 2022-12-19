@@ -23,4 +23,5 @@ public class StoreService {
     public List<Store> getStoreByName(String name) {
         return storeRepository.findByName(name);
     }
+    public Store getStoreByManagerId(Long id) {return storeRepository.findFirstByManager_Id(id);}
 }

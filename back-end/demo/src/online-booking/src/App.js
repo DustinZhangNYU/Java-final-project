@@ -15,20 +15,6 @@ class App extends Component {
     isCustomer: true
   }
 
-  checkLogin() {
-    if (this.state.isLogin) {
-      if (this.state.isCustomer) {
-        <Navigate to="/" />    
-      }
-      else {
-        <Navigate to="/restauranteur" />
-      }
-    }
-    else {
-      <Navigate to="/booking" />
-    }
-  }
-
   render() {
     return (
       <div>

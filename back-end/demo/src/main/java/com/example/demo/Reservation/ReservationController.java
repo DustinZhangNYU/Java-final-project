@@ -16,7 +16,6 @@ import java.util.List;
 @RequestMapping(path = "/reservation")
 public class ReservationController {
     private final ReservationService reservationService;
-
     @Autowired
     public ReservationController(ReservationService reservationService) {this.reservationService = reservationService;}
     @GetMapping(path = "/getAllReservations")

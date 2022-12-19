@@ -26,7 +26,8 @@ public class StoreController {
     public Store getStoreById(@RequestParam Long id){
         return storeService.getStoreById(id);
     }
-
+    @GetMapping(path = "/getStoreByManagerId")
+    public Store getStoreByManagerId(@RequestParam Long id) {return storeService.getStoreByManagerId(id);};
     @GetMapping(path = "/getStoreByName")
     public List<Store> getSoreByName(@RequestParam String name) {
         return storeService.getStoreByName(name);
